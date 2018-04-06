@@ -7,14 +7,16 @@ class PatternShowContainer extends Component {
     super(props)
     this.state = {
        pattern: {},
-       tempo: 120,
+       tempo: 180,
        playTimes: [],
        hitNumber: 1,
-       currentHand: []
+       currentHand: [],
+       color: ''
      }
     this.playBeat = this.playBeat.bind(this)
     this.getTimeofHits = this.getTimeofHits.bind(this)
     this.handleClickPlay = this.handleClickPlay.bind(this)
+    this.playStuff = this.playStuff.bind(this)
   }
 
   componentDidMount() {
@@ -42,7 +44,7 @@ class PatternShowContainer extends Component {
     event.preventDefault();
     let allTimes = []
     allTimes = this.playBeat()
-    this.setState({ playTimes: allTimes})
+    this.setState({ playTimes: this.playBeat()})
     console.log(this.state.playTime)
     console.log(allTimes)
     this.playStuff(allTimes)
@@ -118,22 +120,56 @@ class PatternShowContainer extends Component {
 
   playStuff(times) {
     times.map(time => {
+      let right = "";
+      let left = "";
       let audio1 = new Audio('/audio/gok1.wav');
+      let audio2 = new Audio('/audio/gok2.wav');
       let toMilSeconds = time.seconds * 1000;
-      setTimeout(function() {
-        audio1.play();
+      let colors
+      let handRight = document.getElementById('right')
+      let handLeft = document.getElementById('left')
 
+      handRight.style.color = '#000000'
+      handLeft.style.color = '#000000'
+      setTimeout(function() {
+
+        if(time.note == "accent") {
+          audio2.play();
+        } else {
+          audio1.play();
+        }
         console.log(time.seconds)
         console.log(time.side)
         console.log(time.note)
+        // debugger
+        if(time.side == "right") {
+          // let hand = document.getElementById('right')
+          handRight.style.color = '#8A2BE2';
+          handLeft.style.color = '#000000';
+        } else {
+          // let hand = document.getElementById('left')
+          handLeft.style.color = '#7FFF00';
+          handRight.style.color = '#000000';
+        }
 
       }, (500 + toMilSeconds));
+
+      setTimeout(function(){
+        if(time.side == "right") {
+          handRight.style.color = '#000000';
+        } else {
+          handLeft.style.color = '#000000';
+        }
+
+      }, (600 + toMilSeconds));
     })
   }
 
 
   render() {
     let showPattern = this.state.pattern
+    // debugger
+    let playingTimes = this.state.playTimes
 
     return(
       <div>

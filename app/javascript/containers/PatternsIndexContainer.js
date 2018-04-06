@@ -7,7 +7,7 @@ class PatternsIndexContainer extends Component {
     super(props)
     this.state = {
       allPatterns: [],
-      title: 'Drumming!'
+      title: 'Choose Your Rudiment or Warm-up'
     }
   }
 
@@ -43,7 +43,7 @@ class PatternsIndexContainer extends Component {
     })
     return(
       <div id="patterns_index">
-        <h1>{this.state.title}</h1>
+        <h1>{this.state.title}</h1><br />
         <div className="index-container">
           {patterns}
         </div>

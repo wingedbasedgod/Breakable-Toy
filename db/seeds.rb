@@ -82,6 +82,10 @@ patterns << Pattern.create(
   name: 'Herta',
   subdivision: sixlet,
   time_repeated: 6,
-  right_hand: [[1,0,1,0,0,0]],
-  left_hand: [[0,1,0,0,1,0]]
+  right_hand: [
+    [1,0,1,0,0,0],[1,0,1,0,0,0]
+  ],
+  left_hand: [
+    [0,1,0,0,1,0],[0,1,0,0,1,0]
+  ]
 )
