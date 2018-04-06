@@ -7,16 +7,18 @@ class PatternShowContainer extends Component {
     super(props)
     this.state = {
        pattern: {},
-       tempo: 180,
+       tempo: 145,
        playTimes: [],
        hitNumber: 1,
-       currentHand: [],
+       currentHand: "",
        color: ''
      }
     this.playBeat = this.playBeat.bind(this)
     this.getTimeofHits = this.getTimeofHits.bind(this)
     this.handleClickPlay = this.handleClickPlay.bind(this)
     this.playStuff = this.playStuff.bind(this)
+    this.handleTempoChange = this.handleTempoChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount() {
@@ -38,6 +40,16 @@ class PatternShowContainer extends Component {
       this.setState({ pattern: body.pattern });
     })
     .catch(error => console.error(`Error in fetch: ${error.message}`));
+  }
+
+  handleTempoChange(event) {
+    event.preventDefault();
+    this.setState({ tempo: event.target.value })
+  }
+
+  handleSubmit(event) {
+    alert('Tempo changed to ' + this.state.tempo)
+    event.preventDefault();
   }
 
   handleClickPlay(event) {
@@ -125,7 +137,7 @@ class PatternShowContainer extends Component {
       let audio1 = new Audio('/audio/gok1.wav');
       let audio2 = new Audio('/audio/gok2.wav');
       let toMilSeconds = time.seconds * 1000;
-      let colors
+      let handClass = "";
       let handRight = document.getElementById('right')
       let handLeft = document.getElementById('left')
 
@@ -141,27 +153,25 @@ class PatternShowContainer extends Component {
         console.log(time.seconds)
         console.log(time.side)
         console.log(time.note)
-        // debugger
         if(time.side == "right") {
           // let hand = document.getElementById('right')
-          handRight.style.color = '#8A2BE2';
-          handLeft.style.color = '#000000';
+          handClass = "right"
+          // debugger
+          this.setState({ currentHand: handClass })
         } else {
           // let hand = document.getElementById('left')
-          handLeft.style.color = '#7FFF00';
-          handRight.style.color = '#000000';
+          handClass = "left"
+          this.setState({ currentHand: handClass})
         }
 
-      }, (500 + toMilSeconds));
+      }.bind(this), (500 + toMilSeconds));
 
-      setTimeout(function(){
-        if(time.side == "right") {
-          handRight.style.color = '#000000';
-        } else {
-          handLeft.style.color = '#000000';
-        }
+      setTimeout(function() {
+        handClass = ""
+        this.setState({ currentHand: handClass })
+      }.bind(this), (600 + toMilSeconds));
 
-      }, (600 + toMilSeconds));
+      console.log(this.currentHand)
     })
   }
 
@@ -173,12 +183,22 @@ class PatternShowContainer extends Component {
 
     return(
       <div>
+
+        <form onSubmit={this.handleSubmit} >
+          <label>
+            Tempo:
+            <input type="nubmer" value={this.state.tempo} onChange={this.handleTempoChange}/>
+          </label>
+        </form>
         <PatternShow
           key={this.state.pattern.id}
           id={this.state.pattern.id}
           name={this.state.pattern.name}
           subdivision={this.state.pattern.subdivision}
           onPlayClick={this.handleClickPlay}
+          handClass={this.state.currentHand}
+          handleTempoChange={this.handleTempoChange}
+          handleSubmit={this.handleSubmit}
         />
       </div>
     )

@@ -2,31 +2,36 @@ import React from 'react';
 import { Link } from 'react-router';
 
 const PatternShow = props => {
+  let handClassRight = ""
+  let handClassLeft = ""
+
+  if (props.handClass == 'right') {
+    handClassRight = 'right-active'
+    handClassLeft = ''
+  } else if (props.handClass == 'left') {
+    handClassRight = ''
+    handClassLeft = 'left-active'
+  } else {
+    handClassRight = ''
+    handClassLeft = ''
+  }
+
   return(
     <div className="pattern-show">
       <h1>{props.name}</h1>
-
-      <ul id="pattern-discription">
-        <li label="subdivion"><strong>Subdivision:</strong> {props.subdivision}</li>
-        <li label="pattern-id"><strong>Pattern number:</strong> {props.id}</li>
-      </ul>
 
       <div className="play-button">
         <button onClick={props.onPlayClick}>Play</button>
       </div>
 
-      <Link to='/' className='back-to-pattern'>
-        Back to Pattern List
-      </Link>
-
       <div className="hand">
-        <h1><div id="right">
-          Right
-        </div></h1>
+        <div id="left" className={handClassLeft}>
+          <p>Left   </p>
+        </div>
 
-        <h1><div id="left">
-          Left
-        </div></h1>
+        <div id="right" className={handClassRight}>
+          <p>Right</p>
+        </div>
       </div>
     </div>
   )
