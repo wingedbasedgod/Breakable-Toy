@@ -18,6 +18,16 @@ const PatternShow = props => {
       <Link to='/' className='back-to-pattern'>
         Back to Pattern List
       </Link>
+
+      <div className="hand">
+        <h1><div id="right">
+          Right
+        </div></h1>
+
+        <h1><div id="left">
+          Left
+        </div></h1>
+      </div>
     </div>
   )
 }
